@@ -3,4 +3,4 @@ services:
     image: super-server-backend
     build:
       context: .
-      dockerfile: Docker/DockerFile
+      dockerfile: Docker/Dockerfile
