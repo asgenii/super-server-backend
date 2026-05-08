@@ -1,0 +1,36 @@
+name: pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: SSH and deploy
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          port: ${{ secrets.SSH_PORT }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+          script: |
+            mkdir -p ~/.ssh
+            ssh-keyscan github.com >> ~/.ssh/known_hosts
+
+            cd ${{ secrets.DEPLOY_PATH }}
+
+            if [ -d "backend" ]; then
+              rm -rf backend
+            fi
+
+            git clone https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/asgenii/super-server-backend.git backend
+            cd backend
+            export DOCKER_BUILDKIT=0
+            docker compose down || true
+            docker compose up -d --build

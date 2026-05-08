@@ -1,9 +1,9 @@
 from fastapi import FastAPI
 from fastapi.responses import FileResponse
 
-app = FastAPI()
+server = FastAPI()
 
-@app.get("/download/{package}")
+@server.get("/download/{package}")
 async def download_file(package: str):
     return FileResponse(
         path=f"resources/{package}",
