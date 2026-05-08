@@ -1,0 +1,6 @@
+services:
+  app:
+    image: super-server-backend
+    build:
+      context: .
+      dockerfile: Docker/DockerFile
