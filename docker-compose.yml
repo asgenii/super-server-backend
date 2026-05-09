@@ -1,6 +1,10 @@
 services:
   app:
     image: super-server-backend
+
     build:
       context: .
       dockerfile: Docker/Dockerfile
+
+    ports:
+      - "8000:8000"
